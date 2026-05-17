@@ -358,7 +358,7 @@
       color: #00FF64;
     }
 
-    /* ===== YOUTUBE КНОПКА (чуть меньше) ===== */
+    /* ===== YOUTUBE КНОПКА ===== */
     .youtube-full {
       border-radius: 24px;
       padding: 12px 16px;
@@ -424,14 +424,10 @@
       50% { transform: scale(1.1); }
     }
 
-    /* ===== МЕНЮ ВИЗУАЛИЗАТОРА (чуть больше) ===== */
+    /* ===== МЕНЮ ВИЗУАЛИЗАТОРА (под YouTube) ===== */
     .audio-menu {
-      position: fixed;
-      bottom: 90px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 380px;
-      max-width: 85%;
+      width: 100%;
+      margin-top: 12px;
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -439,16 +435,15 @@
       border-radius: 20px;
       padding: 14px 18px 12px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-      z-index: 999;
       opacity: 0;
-      transform: translateX(-50%) translateY(20px);
+      transform: translateY(20px);
       transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       pointer-events: none;
     }
 
     .audio-menu.visible {
       opacity: 1;
-      transform: translateX(-50%) translateY(0);
+      transform: translateY(0);
       pointer-events: auto;
     }
 
@@ -513,13 +508,11 @@
     }
 
     @media (max-width: 480px) {
-      .audio-menu {
-        width: 85%;
-        bottom: 80px;
-        padding: 12px 14px 10px;
-      }
       .visualizer-canvas {
         height: 30px;
+      }
+      .audio-menu {
+        padding: 12px 14px 10px;
       }
     }
 
@@ -533,7 +526,6 @@
       .youtube-full i { font-size: 1.2rem; }
       .audio-menu {
         padding: 10px 12px 8px;
-        bottom: 70px;
       }
       .visualizer-canvas {
         height: 25px;
@@ -677,7 +669,7 @@
 <body>
 
 <!-- ===== ЗВУК КЛИКА ===== -->
-<audio id="click-sound" preload="auto">
+<audio id="click-sound" preload="auto" volume="0.3">
   <source src="click.mp3" type="audio/mpeg">
 </audio>
 
@@ -755,21 +747,21 @@
     </div>
   </div>
 
-  <!-- ===== YOUTUBE КНОПКА (чуть меньше) ===== -->
+  <!-- ===== YOUTUBE КНОПКА ===== -->
   <a href="https://youtube.com/@ltz_yarik?si=LVGcTWqQJEInBW74" target="_blank" class="youtube-full animate-item delay-8" id="youtube-item">
     <i class="fab fa-youtube"></i>
     <span>YouTube</span>
   </a>
-</div>
 
-<!-- ===== МЕНЮ ВИЗУАЛИЗАТОРА (чуть больше) ===== -->
-<div class="audio-menu" id="audio-menu">
-  <canvas class="visualizer-canvas" id="visualizer-canvas"></canvas>
-  <div class="audio-controls">
-    <div class="audio-status">
-      audio: <span id="status-text" class="status-on">ON</span>
+  <!-- ===== МЕНЮ ВИЗУАЛИЗАТОРА (под YouTube) ===== -->
+  <div class="audio-menu" id="audio-menu">
+    <canvas class="visualizer-canvas" id="visualizer-canvas"></canvas>
+    <div class="audio-controls">
+      <div class="audio-status">
+        audio: <span id="status-text" class="status-on">ON</span>
+      </div>
+      <button class="mute-btn" id="mute-btn">[ mute ]</button>
     </div>
-    <button class="mute-btn" id="mute-btn">[ mute ]</button>
   </div>
 </div>
 
@@ -780,6 +772,11 @@
   const clickSound = document.getElementById('click-sound');
   const animatedItems = document.querySelectorAll('.animate-item');
   const audioMenu = document.getElementById('audio-menu');
+
+  // Делаем звук клика тише
+  if (clickSound) {
+    clickSound.volume = 0.3;
+  }
 
   // ================================
   // ЗАГРУЗКА → ЭКРАН ВХОДА
